@@ -1,0 +1,16 @@
+/*copy from diabetes.html - here for search purposes*/
+.scrollable-box5 {
+    overflow-y: auto;
+    height: 600px;
+}
+
+.container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+
+#ctr {
+    margin-left: 50px;
+}
