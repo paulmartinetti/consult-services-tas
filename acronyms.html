@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acronyms and Their Meanings</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-social@2.1.0/css/single/linkedin/linkedin.css">
     <style>
         #box4 {
             height: 100px;
@@ -117,18 +116,6 @@
         // all text prompts are fed through this function
         function feedback(t) {
             r1.innerHTML = t;
-        }
-
-        function resetBtn() {
-            // remove current buttons
-            removeAllChildNodes(c.box);
-            // remove current buttons
-            removeAllChildNodes(s.box);
-            // remove current buttons
-            removeAllChildNodes(t.box);
-            loadAll();
-            feedback("Search a consultant, service, or therapeutic area");
-            w1.value = "";
         }
 
         // GUI
