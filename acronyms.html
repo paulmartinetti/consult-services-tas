@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acronyms and Their Meanings</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-social@2.1.0/css/single/linkedin/linkedin.css">
+    <style>
+        #box4 {
+            height: 100px;
+        }
+
+        .scrollable-box5 {
+            overflow-y: auto;
+            height: 600px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #ctr {
+            margin-left: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="section" id="box1">
+        <label class="label">Acronyms</label>
+        <label class="label">Search</label>
+        <form class="box" id="box4">
+            <div class="field">
+                <div class="control">
+                    <input class="input" type="text" id="w1" oninput="getQ(this.value)">
+                    <label class="label" id="r1"></label>
+                </div>
+            </div>
+        </form>
+        <div class="box" id="box6">
+            <div class="button is-size-4 has-background-linkedin has-text-white" onclick="resetBtn()">Reset
+            </div>
+        </div>
+        <div class="box scrollable-box5" id="box5"></div>
+    </section>
+    <script>
+        // global vars
+        var c = {}
+        c.id = "c"
+        c.curA = []
+        c.curI = -1;
+        var res = 0;
+        var temp
+        var yes
+        //
+
+        // respond to search typing
+        function getQ(tx) {
+
+            // wait for 2 letters
+            if (tx.length < 1) return;
+
+            /**
+             * Keep associated boxes, btns, data together
+             * object names "c", "s", "t" -- only c for acronyms
+             * obj.id = "c" - used for buttons
+             * obj.curA = [] - current subset of indices to display as buttons
+             * obj.curI = -1 - selected button
+             * obj.data = data array for object
+             * obj.len = length of data array
+             * obj.box = box in ui where buttons are loaded
+            */
+
+            // reset interface
+            c.curA = [];
+
+            res = 0;
+            this.feedback(" ");
+
+            tx = tx.toLowerCase();
+
+            // search consultants for text tx
+            for (const i in c.data) {
+                // capture acronym
+                temp = c.data[i].a;
+                // indexOf fn is case-sensitive
+                temp = temp.toLowerCase();
+
+                // grabs the index wn the string, -1 if no result
+                yes = temp.indexOf(tx);
+
+                // if there is a match, add the index to the results array
+                if (yes !== -1) {
+                    c.curA.push(i);
+                }
+            }
+            // results
+            if (c.curA.length > 0) res = 1;
+
+            /**
+            * Result cases (both = c + s)
+            * 0 - a no, d no
+            * 1 - a yes, d no
+            * 2 - both yes
+            * 
+            * **/
+            switch (res) {
+                //
+                case 0:
+                    this.feedback("No results, please try again")
+                    break;
+
+                case 1: // consultant match
+                    // update consultants
+                    let studyText = ""
+                    Object.keys(c.curA).forEach(key => {
+                        // don't need url text
+                        if (key != "url") {
+                            // filter missing info
+                            if (obj[key] != undefined) {
+                                studyText += key + ": " + obj[key] + "<br><br>";
+                            }
+                        }
+                    });
+                    box5.innerHTML = studyText;
+                    break;
+
+            }
+        }
+
+        function removeDups(myA) {
+            const uniqueVals = new Set(myA);
+            const uniqueA = [...uniqueVals];
+            return uniqueA;
+        }
+
+        // all text prompts are fed through this function
+        function feedback(t) {
+            r1.innerHTML = t;
+        }
+
+        function resetBtn() {
+            // remove current buttons
+            removeAllChildNodes(c.box);
+            // remove current buttons
+            removeAllChildNodes(s.box);
+            // remove current buttons
+            removeAllChildNodes(t.box);
+            loadAll();
+            feedback("Search a consultant, service, or therapeutic area");
+            w1.value = "";
+        }
+
+        // GUI
+        // input box
+        const w1 = document.getElementById('w1');
+        // feedback label
+        const r1 = document.getElementById('r1');
+        var box5 = document.getElementById('box5');
+
+        // load data
+        url = 'acronyms.json';
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Process the response data
+                //console.log(data);
+                c.data = data;
+                c.len = c.data.length;
+                // clear memory
+                data = null
+                // start
+                feedback("Enter an acronym to find its definition");
+            })
+            .catch(error => {
+                // Handle errors
+                console.error('There was a problem with the request:', error);
+            });
+
+    </script>
+</body>
+
+</html>
