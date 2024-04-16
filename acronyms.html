@@ -59,7 +59,7 @@
             // wait for 2 letters
             if (tx.length < 2) {
                 box5.innerHTML = ""
-                feedback("Enter an acronym to find its definition");
+                feedback("Enter an acronym to find its meaning.");
                 return;
             }
 
@@ -155,7 +155,7 @@
                 // clear memory
                 data = null
                 // start
-                feedback("Enter an acronym to find its definition from a list of "+c.len+".");
+                feedback("Enter an acronym to find its meaning from a list of "+c.len+".");
             })
             .catch(error => {
                 // Handle errors
