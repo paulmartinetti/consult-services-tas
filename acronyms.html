@@ -32,8 +32,6 @@
 
 <body>
     <section class="section" id="box1">
-        <label class="label">Acronyms</label>
-        <label class="label">Search</label>
         <form class="box" id="box4">
             <div class="field">
                 <div class="control">
@@ -42,10 +40,6 @@
                 </div>
             </div>
         </form>
-        <div class="box" id="box6">
-            <div class="button is-size-4 has-background-linkedin has-text-white" onclick="resetBtn()">Reset
-            </div>
-        </div>
         <div class="box scrollable-box5" id="box5"></div>
     </section>
     <script>
@@ -63,18 +57,11 @@
         function getQ(tx) {
 
             // wait for 2 letters
-            if (tx.length < 1) return;
-
-            /**
-             * Keep associated boxes, btns, data together
-             * object names "c", "s", "t" -- only c for acronyms
-             * obj.id = "c" - used for buttons
-             * obj.curA = [] - current subset of indices to display as buttons
-             * obj.curI = -1 - selected button
-             * obj.data = data array for object
-             * obj.len = length of data array
-             * obj.box = box in ui where buttons are loaded
-            */
+            if (tx.length < 2) {
+                box5.innerHTML = ""
+                feedback("Enter an acronym to find its definition");
+                return;
+            }
 
             // reset interface
             c.curA = [];
@@ -96,7 +83,7 @@
 
                 // if there is a match, add the index to the results array
                 if (yes !== -1) {
-                    c.curA.push(i);
+                    c.curA.push(c.data[i]);
                 }
             }
             // results
@@ -118,25 +105,13 @@
                 case 1: // consultant match
                     // update consultants
                     let studyText = ""
-                    Object.keys(c.curA).forEach(key => {
-                        // don't need url text
-                        if (key != "url") {
-                            // filter missing info
-                            if (obj[key] != undefined) {
-                                studyText += key + ": " + obj[key] + "<br><br>";
-                            }
-                        }
-                    });
+                    for (const i in c.curA) {
+                        studyText += c.curA[i].a + " - " + c.curA[i].d +  "<br><br>";
+                    }
                     box5.innerHTML = studyText;
                     break;
 
             }
-        }
-
-        function removeDups(myA) {
-            const uniqueVals = new Set(myA);
-            const uniqueA = [...uniqueVals];
-            return uniqueA;
         }
 
         // all text prompts are fed through this function
@@ -180,7 +155,7 @@
                 // clear memory
                 data = null
                 // start
-                feedback("Enter an acronym to find its definition");
+                feedback("Enter an acronym to find its definition from a list of "+c.len+".");
             })
             .catch(error => {
                 // Handle errors
