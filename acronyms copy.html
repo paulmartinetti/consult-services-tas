@@ -24,7 +24,7 @@
             <div class="field">
                 <div class="control">
                     <input class="input" type="text" oninput="getQ(this.value)">
-                    <label class="label" id="r1">Loading...</label>
+                    <label class="label" id="r1"></label>
                 </div>
             </div>
         </form>
@@ -32,8 +32,10 @@
     </section>
     <script>
         // global vars
-        var a = {}
-        a.curA = []
+        var c = {}
+        c.id = "c"
+        c.curA = []
+        c.curI = -1;
         var res = 0;
         var temp
         var yes
@@ -50,7 +52,7 @@
             }
 
             // reset interface
-            a.curA = [];
+            c.curA = [];
 
             res = 0;
             this.feedback(" ");
@@ -58,9 +60,9 @@
             tx = tx.toLowerCase();
 
             // search consultants for text tx
-            for (const i in a.data) {
+            for (const i in c.data) {
                 // capture acronym
-                temp = a.data[i].a;
+                temp = c.data[i].a;
                 // indexOf fn is case-sensitive
                 temp = temp.toLowerCase();
 
@@ -69,11 +71,11 @@
 
                 // if there is a match, add the index to the results array
                 if (yes !== -1) {
-                    a.curA.push(a.data[i]);
+                    c.curA.push(c.data[i]);
                 }
             }
             // results
-            if (a.curA.length > 0) res = 1;
+            if (c.curA.length > 0) res = 1;
 
             /**
             * Result cases (both = c + s)
@@ -91,8 +93,8 @@
                 case 1: // consultant match
                     // update consultants
                     let studyText = ""
-                    for (const i in a.curA) {
-                        studyText += a.curA[i].a + " - " + a.curA[i].d +  "<br><br>";
+                    for (const i in c.curA) {
+                        studyText += c.curA[i].a + " - " + c.curA[i].d +  "<br><br>";
                     }
                     box5.innerHTML = studyText;
                     break;
@@ -122,12 +124,12 @@
             .then(data => {
                 // Process the response data
                 //console.log(data);
-                a.data = data;
-                a.len = a.data.length;
+                c.data = data;
+                c.len = c.data.length;
                 // clear memory
                 data = null
                 // start
-                feedback("Enter an acronym to find its meaning from a list of "+a.len+".");
+                feedback("Enter an acronym to find its meaning from a list of "+c.len+".");
             })
             .catch(error => {
                 // Handle errors
