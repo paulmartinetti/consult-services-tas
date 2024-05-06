@@ -222,7 +222,7 @@
                 case 2: // service match
                     upBtns(s);
                     getConsultants(s, "A")
-                    getTAs(c.curA)
+                    removeAllChildNodes(t.box);
                     break;
 
                 case 3: // both match, do not load TAs
@@ -233,7 +233,7 @@
                 case 4: // TA match
                     upBtns(t);
                     getConsultants(t, "A")
-                    getServices(c.curA);
+                    removeAllChildNodes(s.box);
                     break;
 
                 case 5: // c and t match
@@ -281,8 +281,8 @@
                     s.curI = parseInt(id.substring(1));
                     getConsultants(s)
 
-                    // update TAs for these consultants
-                    getTAs(c.curA);
+                    // nuke TAs
+                    removeAllChildNodes(t.box);
                     break;
                 case "t":
                     // TA chosen
@@ -292,8 +292,8 @@
 
                     getConsultants(t)
 
-                    // update services for these consultants (who matched TA)
-                    getServices(c.curA);
+                    // nuke services
+                    removeAllChildNodes(s.box);
                     break;
             }
             // show selected

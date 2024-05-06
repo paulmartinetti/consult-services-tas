@@ -4,38 +4,54 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acronyms and Their Meanings</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <!--link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"-->
     <style>
         #box4 {
             height: 100px;
         }
-
         .scrollable-box5 {
             overflow-y: auto;
-            height: 600px;
+            height: 400px;
         }
+        #box1{
+            margin-left: 150px;
+            width: 70%;
+            margin: 0 auto;
+        }
+        #sb {
+            text-align: center;
+            padding: 5px;
+        }
+        a {
+            font-size: 18px;
+        }
+      
     </style>
 </head>
 
 <body>
-    <section class="section" id="box1">
+  <p>&nbsp;</p>
+  <h2 style="text-align: center;"><span>Life Science Industry Acronyms and Terms List</span></h2>
+        <section class="section" id="box1">
         <form class="box" id="box4">
             <div class="field">
-                <div class="control">
-                    <input class="input" type="text" oninput="getQ(this.value)">
-                    <label class="label" id="r1"></label>
+                <div id="sb">
+                  <input class="input" type="text" placeholder="Type here" oninput="getQ(this.value)"><br>
+                    <label class="label" id="r1">Loading...</label>
                 </div>
             </div>
         </form>
         <div class="box scrollable-box5" id="box5"></div>
     </section>
+  <p>&nbsp;</p>
+<h5 style="white-space: pre-wrap; text-align: center;">&nbsp;</h5>
+<h5 style="white-space: pre-wrap; text-align: center;"><strong><a href="https://4628766.fs1.hubspotusercontent-na1.net/hubfs/4628766/Hosted%20Media/FDA-acronyms-db.xlsx">Download</a> your free copy of the full list of terms.</strong></h5>
+<h5 style="white-space: pre-wrap; text-align: center;"><strong>Written by Bracken Senior Partner, Paul Martinetti, MD. </strong></h5>
+ 
     <script>
         // global vars
-        var c = {}
-        c.id = "c"
-        c.curA = []
-        c.curI = -1;
+        var a = {}
+        a.curA = []
         var res = 0;
         var temp
         var yes
@@ -52,7 +68,7 @@
             }
 
             // reset interface
-            c.curA = [];
+            a.curA = [];
 
             res = 0;
             this.feedback(" ");
@@ -60,9 +76,9 @@
             tx = tx.toLowerCase();
 
             // search consultants for text tx
-            for (const i in c.data) {
+            for (const i in a.data) {
                 // capture acronym
-                temp = c.data[i].a;
+                temp = a.data[i].a;
                 // indexOf fn is case-sensitive
                 temp = temp.toLowerCase();
 
@@ -71,11 +87,11 @@
 
                 // if there is a match, add the index to the results array
                 if (yes !== -1) {
-                    c.curA.push(c.data[i]);
+                    a.curA.push(a.data[i]);
                 }
             }
             // results
-            if (c.curA.length > 0) res = 1;
+            if (a.curA.length > 0) res = 1;
 
             /**
             * Result cases (both = c + s)
@@ -93,8 +109,8 @@
                 case 1: // consultant match
                     // update consultants
                     let studyText = ""
-                    for (const i in c.curA) {
-                        studyText += c.curA[i].a + " - " + c.curA[i].d +  "<br><br>";
+                    for (const i in a.curA) {
+                        studyText += a.curA[i].a + " - " + a.curA[i].d +  "<br><br>";
                     }
                     box5.innerHTML = studyText;
                     break;
@@ -113,7 +129,7 @@
         var box5 = document.getElementById('box5');
 
         // load data
-        url = 'acronyms.json';
+        url = 'https://4628766.fs1.hubspotusercontent-na1.net/hubfs/4628766/Hosted%20Media/acronyms.json';
         fetch(url)
             .then(response => {
                 if (!response.ok) {
@@ -124,12 +140,12 @@
             .then(data => {
                 // Process the response data
                 //console.log(data);
-                c.data = data;
-                c.len = c.data.length;
+                a.data = data;
+                a.len = a.data.length;
                 // clear memory
                 data = null
                 // start
-                feedback("Enter an acronym to find its meaning from a list of "+c.len+".");
+                feedback("Enter an acronym to find its meaning from a list of "+a.len+".");
             })
             .catch(error => {
                 // Handle errors
